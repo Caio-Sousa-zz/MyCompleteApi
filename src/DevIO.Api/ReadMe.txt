@@ -1,6 +1,4 @@
-﻿04:06
-
- public class FornecedoreViewModel
+﻿ public class FornecedoreViewModel
     {
       
         public Guid Id { get; set; }
