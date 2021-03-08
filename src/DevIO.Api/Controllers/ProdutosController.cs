@@ -27,7 +27,9 @@ namespace DevIO.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
         {
-            return _produtoRepository.ObterProdutosFornecedores().Adapt<IEnumerable<ProdutoViewModel>>();
+            var produtos = await _produtoRepository.ObterProdutosFornecedores();
+
+            return produtos.Adapt<IEnumerable<ProdutoViewModel>>();
         }
 
         [HttpGet("{id:guid}")]
@@ -57,11 +59,19 @@ namespace DevIO.Api.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
+            var imagemNome = $"{Guid.NewGuid()}_{produtoViewModel.Imagem}";
+
+            if (!UploadArquivo(produtoViewModel.ImagemUpload, imagemNome))
+            {
+                return CustomResponse(produtoViewModel);
+            }
+
+            produtoViewModel.Imagem = imagemNome;
+
             await _produtoRepository.Adicionar(produtoViewModel.Adapt<Produto>());
 
             return CustomResponse(produtoViewModel);
         }
-
 
         private bool UploadArquivo(string arquivo, string nomeImagem)
         {
