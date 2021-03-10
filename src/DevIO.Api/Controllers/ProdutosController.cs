@@ -27,6 +27,8 @@ namespace DevIO.Api.Controllers
         [HttpGet]
         public async Task<IEnumerable<ProdutoViewModel>> ObterTodos()
         {
+            TypeAdapterConfig<Produto, ProdutoViewModel>.NewConfig().Map(b => b.NomeFornecedor, a => a.Fornecedor.Nome);
+
             var produtos = await _produtoRepository.ObterProdutosFornecedores();
 
             return produtos.Adapt<IEnumerable<ProdutoViewModel>>();
