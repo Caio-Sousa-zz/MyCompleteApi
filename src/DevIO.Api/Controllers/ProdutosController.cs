@@ -95,6 +95,12 @@ namespace DevIO.Api.Controllers
             return CustomResponse(produtoImagemViewModel);
         }
 
+        [DisableRequestSizeLimit(40000000000)]
+        [HttpPost("imagem")]
+        public async Task<ActionResult> AdicionarImagem(IFormFile imagem)
+        {
+           return Ok(imagem);
+        }
 
         private bool UploadArquivo(string arquivo, string nomeImagem)
         {
