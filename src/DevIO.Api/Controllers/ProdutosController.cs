@@ -77,7 +77,7 @@ namespace DevIO.Api.Controllers
         }
 
         [HttpPost("Adicionar")]
-        public async Task<ActionResult<ProdutoImagemViewModel>> AdicionarAlternativo(ProdutoImagemViewModel produtoImagemViewModel)
+        public async Task<ActionResult<ProdutoImagemViewModel>> AdicionarAlternativo(IFormFile imagem, ProdutoImagemViewModel produtoImagemViewModel)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -95,7 +95,7 @@ namespace DevIO.Api.Controllers
             return CustomResponse(produtoImagemViewModel);
         }
 
-        [DisableRequestSizeLimit(40000000000)]
+        [DisableRequestSizeLimit()]
         [HttpPost("imagem")]
         public async Task<ActionResult> AdicionarImagem(IFormFile imagem)
         {

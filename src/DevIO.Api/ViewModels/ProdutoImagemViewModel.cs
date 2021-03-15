@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace DevIO.Api.ViewModels
 {
-    //[ModelBinder(typeof(JsonWithFilesFormDataModelBinder), Name = "produto")]
     public class ProdutoImagemViewModel
     {
         [Key]
