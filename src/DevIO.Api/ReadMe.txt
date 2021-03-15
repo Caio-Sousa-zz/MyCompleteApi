@@ -1,4 +1,7 @@
-﻿14:35
+﻿add-migration Identity -Context ApplicationDbContext
+update-database -Context ApplicationDbContext
+
+
  
 public class FornecedoreViewModel
 {

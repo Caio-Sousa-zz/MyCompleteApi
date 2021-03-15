@@ -2,6 +2,7 @@
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevIO.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class FornecedoresController : MainController
     {
@@ -25,7 +27,7 @@ namespace DevIO.Api.Controllers
             _fornecedorService = fornecedorService;
             _enderecoRepository = enderecoRepository;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IEnumerable<FornecedoreViewModel>> ObterTodos()
         {
