@@ -29,27 +29,17 @@ namespace DevIO.Api
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.WebApiConfig();
+
             services.ResolveDependencies();
 
             services.AddControllers();
 
-            services.Configure<ApiBehaviorOptions>(op =>
-            {
-                op.SuppressModelStateInvalidFilter = true;
-            });
-
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevIO.Api", Version = "v1" });
-            });
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("Development",
-                        builder => builder.AllowAnyOrigin()
-                                          .AllowAnyMethod()
-                                          .AllowAnyHeader());
-            });
+            });           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,13 +48,12 @@ namespace DevIO.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevIO.Api v1"));
+                app.UseSwagger();       
             }
 
-            app.UseCors("Development");
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevIO.Api v1"));
 
-            app.UseHttpsRedirection();
+            app.UseMvcConfiguration();
 
             app.UseRouting();
 

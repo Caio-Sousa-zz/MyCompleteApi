@@ -95,11 +95,45 @@ namespace DevIO.Api.Controllers
             return CustomResponse(produtoImagemViewModel);
         }
 
+        [HttpPut("{id:guid}")]
+        public async Task<ActionResult<ProdutoImagemViewModel>> Atualizar(Guid id, ProdutoViewModel produtoViewModel)
+        {
+            if (id != produtoViewModel.Id)
+            {
+                NotificarErro("O id está invaálido");
+                return CustomResponse(produtoViewModel);
+            }
+
+            var produtoAtualizacao = await ObterProduto(id);
+            produtoViewModel.Imagem = produtoAtualizacao.Imagem;
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            if (produtoViewModel.ImagemUpload != null)
+            {
+                var nomeImagem = $"{Guid.NewGuid()}_{produtoViewModel.Imagem}";
+
+                if(!UploadArquivo(produtoViewModel.ImagemUpload, nomeImagem))
+                    return CustomResponse(ModelState);
+
+                produtoAtualizacao.Imagem = nomeImagem;
+            }
+
+            produtoAtualizacao.Nome = produtoViewModel.Nome;
+            produtoAtualizacao.Descricao = produtoViewModel.Descricao;
+            produtoAtualizacao.Valor = produtoViewModel.Valor;
+            produtoAtualizacao.Ativo = produtoViewModel.Ativo;
+
+            await _produtoRepository.Atualizar(produtoAtualizacao.Adapt<Produto>());
+
+            return CustomResponse(produtoViewModel);
+        }
+
         [DisableRequestSizeLimit()]
         [HttpPost("imagem")]
         public async Task<ActionResult> AdicionarImagem(IFormFile imagem)
         {
-           return Ok(imagem);
+            return Ok(imagem);
         }
 
         private bool UploadArquivo(string arquivo, string nomeImagem)
