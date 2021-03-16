@@ -1,4 +1,6 @@
-﻿add-migration Identity -Context ApplicationDbContext
+﻿17:00 minutos
+
+add-migration Identity -Context ApplicationDbContext
 update-database -Context ApplicationDbContext
 
 
