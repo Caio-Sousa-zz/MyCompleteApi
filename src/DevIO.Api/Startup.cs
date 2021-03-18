@@ -34,11 +34,11 @@ namespace DevIO.Api
             services.ResolveDependencies();
 
             services.AddControllers();
-       
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevIO.Api", Version = "v1" });
-            });           
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,18 +47,18 @@ namespace DevIO.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();       
+                app.UseSwagger();
             }
 
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevIO.Api v1"));
 
-            app.UseRouting();
-            
-            app.UseAuthorization();
-
-            app.UseAuthentication();
-
             app.UseMvcConfiguration();
+          
+            app.UseAuthentication();
+           
+            app.UseRouting();
+           
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
