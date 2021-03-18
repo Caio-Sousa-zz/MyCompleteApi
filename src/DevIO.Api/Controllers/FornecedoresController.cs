@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace DevIO.Api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     public class FornecedoresController : MainController
     {
@@ -27,7 +26,7 @@ namespace DevIO.Api.Controllers
             _fornecedorService = fornecedorService;
             _enderecoRepository = enderecoRepository;
         }
-        [AllowAnonymous]
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<FornecedoreViewModel>> ObterTodos()
         {

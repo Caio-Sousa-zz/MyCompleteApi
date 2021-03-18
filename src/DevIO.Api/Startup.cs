@@ -34,8 +34,7 @@ namespace DevIO.Api
             services.ResolveDependencies();
 
             services.AddControllers();
-
-           
+       
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DevIO.Api", Version = "v1" });
