@@ -1,4 +1,4 @@
-﻿12:04
+﻿03:35
 
 add-migration Identity -Context ApplicationDbContext
 update-database -Context ApplicationDbContext
@@ -7,7 +7,6 @@ update-database -Context ApplicationDbContext
  
 public class FornecedoreViewModel
 {
-      
     public Guid Id { get; set; }
 
     public string Nome { get; set; }

@@ -22,7 +22,8 @@ namespace DevIO.Api.Controllers
         public FornecedoresController(IFornecedorRepository fornecedorRepository,
                                       IFornecedorService fornecedorService,
                                       IEnderecoRepository enderecoRepository,
-                                      INotificador notificador) : base(notificador)
+                                      INotificador notificador,
+                                      IUser user) : base(notificador, user)
         {
             _fornecedorRepository = fornecedorRepository;
             _fornecedorService = fornecedorService;
@@ -58,6 +59,11 @@ namespace DevIO.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<FornecedoreViewModel>> Adicionar(FornecedoreViewModel fornecedoreViewModel)
         {
+            if (UsuarioAutenticado)
+            {
+                var userName = AppUser.Name;
+            }
+
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             await _fornecedorService.Adicionar(fornecedoreViewModel.Adapt<Fornecedor>());

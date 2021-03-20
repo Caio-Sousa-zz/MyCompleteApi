@@ -19,7 +19,8 @@ namespace DevIO.Api.Controllers
 
         public ProdutosController(INotificador notificador,
                                   IProdutoRepository produtoRepository,
-                                  IProdutoService produtoService) : base(notificador)
+                                  IProdutoService produtoService,
+                                  IUser user) : base(notificador, user)
         {
             _produtoRepository = produtoRepository;
             _produtoService = produtoService;
@@ -71,7 +72,7 @@ namespace DevIO.Api.Controllers
 
             produtoViewModel.Imagem = imagemNome;
 
-            await _produtoRepository.Adicionar(produtoViewModel.Adapt<Produto>());
+            await _produtoService.Adicionar(produtoViewModel.Adapt<Produto>());
 
             return CustomResponse(produtoViewModel);
         }
