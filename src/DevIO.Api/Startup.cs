@@ -47,17 +47,23 @@ namespace DevIO.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
+                app.UseCors("Development");
             }
+            else
+            {
+                app.UseCors("Production");
+            }
+
+            app.UseSwagger();
 
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DevIO.Api v1"));
 
             app.UseMvcConfiguration();
-          
+
             app.UseAuthentication();
-           
+
             app.UseRouting();
-           
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

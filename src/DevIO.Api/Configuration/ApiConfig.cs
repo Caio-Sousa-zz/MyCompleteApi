@@ -20,6 +20,14 @@ namespace DevIO.Api.Configuration
                         builder => builder.AllowAnyOrigin()
                                           .AllowAnyMethod()
                                           .AllowAnyHeader());
+
+                options.AddPolicy("Production",
+                   builder => builder.AllowAnyOrigin()
+                                     .WithOrigins("https://websiteteste.com")
+                                     .SetIsOriginAllowedToAllowWildcardSubdomains()
+                                     .AllowAnyMethod()
+                                     .AllowAnyHeader()
+                                     .AllowCredentials());
             });
 
             return services;
@@ -28,8 +36,6 @@ namespace DevIO.Api.Configuration
         public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
             app.UseHttpsRedirection();
-
-            app.UseCors("Development");
 
             return app;
         }
