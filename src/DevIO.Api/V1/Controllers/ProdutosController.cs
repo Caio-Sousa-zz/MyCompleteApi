@@ -1,4 +1,5 @@
-﻿using DevIO.Api.ViewModels;
+﻿using DevIO.Api.Controllers;
+using DevIO.Api.ViewModels;
 using DevIO.Business.Intefaces;
 using DevIO.Business.Models;
 using Mapster;
@@ -9,9 +10,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace DevIO.Api.Controllers
+namespace DevIO.Api.V1.Controllers
 {
-    [Route("api/produtos")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class ProdutosController : MainController
     {
         private IProdutoRepository _produtoRepository { get; set; }
@@ -114,7 +116,7 @@ namespace DevIO.Api.Controllers
             {
                 var nomeImagem = $"{Guid.NewGuid()}_{produtoViewModel.Imagem}";
 
-                if(!UploadArquivo(produtoViewModel.ImagemUpload, nomeImagem))
+                if (!UploadArquivo(produtoViewModel.ImagemUpload, nomeImagem))
                     return CustomResponse(ModelState);
 
                 produtoAtualizacao.Imagem = nomeImagem;

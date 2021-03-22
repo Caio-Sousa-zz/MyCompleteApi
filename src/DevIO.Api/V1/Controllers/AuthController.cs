@@ -1,4 +1,5 @@
-﻿using DevIO.Api.Extensions;
+﻿using DevIO.Api.Controllers;
+using DevIO.Api.Extensions;
 using DevIO.Api.ViewModels;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Identity;
@@ -12,9 +13,10 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevIO.Api.Controllers
+namespace DevIO.Api.V1.Controllers
 {
-    [Route("api")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -127,7 +129,7 @@ namespace DevIO.Api.Controllers
                 UserToken = new UserTokenViewModel
                 {
                     Id = user.Id,
-                    Claims = claims.Select(c=> new ClaimViewModel{ Type = c.Type, Value = c.Value }),
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value }),
                     Email = email
                 }
             };
