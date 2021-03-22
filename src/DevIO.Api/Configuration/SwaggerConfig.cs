@@ -31,7 +31,7 @@ namespace DevIO.Api.Configuration
                 });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
+                {
                     {
                         new OpenApiSecurityScheme
                         {
@@ -43,7 +43,7 @@ namespace DevIO.Api.Configuration
                         },
                         new string[] {}
                     }
-            });
+                });
             });
 
             return services;
