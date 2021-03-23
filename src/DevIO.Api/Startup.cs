@@ -7,7 +7,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace DevIO.Api
 {
@@ -37,7 +36,9 @@ namespace DevIO.Api
             services.AddControllers();
 
             services.AddSwaggerConfig();
-       }
+
+            services.AddLoggingConfig();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
@@ -52,6 +53,8 @@ namespace DevIO.Api
                 app.UseCors("Production");
             }
 
+            app.UseLoggingConfig();
+
             app.UseMvcConfiguration();
 
             app.UseAuthentication();
@@ -65,7 +68,7 @@ namespace DevIO.Api
                 endpoints.MapControllers();
             });
 
-            app.UseSwaggerConfig(provider); 
+            app.UseSwaggerConfig(provider);
         }
     }
 }
