@@ -1,19 +1,13 @@
 using DevIO.Api.Configuration;
 using DevIO.Api.Extensions;
 using DevIO.Data.Context;
-using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Net.Mime;
-using System.Text.Json;
 
 namespace DevIO.Api
 {
@@ -46,10 +40,7 @@ namespace DevIO.Api
 
             services.AddLoggingConfig();
 
-            services.AddHealthChecks()    
-                    .AddSqlServer(Configuration.GetConnectionString("DefaultConnection"), name: "sqlserver", tags: new string[] { "db", "data" });
-          
-            services.AddHealthChecksUI().AddInMemoryStorage();
+            services.AddHealthCheckConfig(Configuration);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,18 +56,7 @@ namespace DevIO.Api
                 app.UseCors("Production");
             }
 
-            // Gera o endpoint que retornará os dados utilizados no dashboard
-            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
-            {
-                Predicate = _ => true,
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-            // Ativa o dashboard para a visualização da situação de cada Health Check
-            app.UseHealthChecksUI(options =>
-            {
-                options.UIPath = "/monitor";
-            });
+            app.UseHealthCheckConfig();
 
             app.UseStaticFiles();
 
@@ -98,8 +78,6 @@ namespace DevIO.Api
             });
 
             app.UseSwaggerConfig(provider);
-
-            
         }
     }
 }
