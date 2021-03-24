@@ -1,4 +1,5 @@
 using DevIO.Api.Configuration;
+using DevIO.Api.Extensions;
 using DevIO.Data.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,8 @@ namespace DevIO.Api
             }
 
             app.UseLoggingConfig();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseMvcConfiguration();
 
