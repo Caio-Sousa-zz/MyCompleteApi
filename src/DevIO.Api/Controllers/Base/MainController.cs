@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Linq;
 
-namespace DevIO.Api.Controllers
+namespace DevIO.Api.Controllers.Base
 {
     [ApiController]
     public abstract class MainController : ControllerBase

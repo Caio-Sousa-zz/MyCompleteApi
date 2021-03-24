@@ -1,4 +1,4 @@
-﻿using DevIO.Api.Controllers;
+﻿using DevIO.Api.Controllers.Base;
 using DevIO.Business.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 
