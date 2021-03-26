@@ -1,5 +1,5 @@
 ﻿10:00
-
+change
 add-migration Identity -Context ApplicationDbContext
 update-database -Context ApplicationDbContext
 
