@@ -56,13 +56,13 @@ namespace DevIO.Api
                 app.UseCors("Production");
             }
 
-            app.UseHealthCheckConfig();
-
             app.UseStaticFiles();
 
             app.UseLoggingConfig();
 
             app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseHealthCheckConfig();
 
             app.UseMvcConfiguration();
 
@@ -78,6 +78,8 @@ namespace DevIO.Api
             });
 
             app.UseSwaggerConfig(provider);
+
+           
         }
     }
 }
