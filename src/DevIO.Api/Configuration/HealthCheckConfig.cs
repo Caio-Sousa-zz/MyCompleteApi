@@ -1,11 +1,10 @@
-﻿using HealthChecks.UI.Client;
+﻿using DevIO.Api.Extensions;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DevIO.Api.Configuration
 {
@@ -15,7 +14,7 @@ namespace DevIO.Api.Configuration
         {
             //adding health check services to container
             services.AddHealthChecks()
-                   .AddCheck<ExampleHealthCheck>("example_health_check")
+                   .AddCheck("Produtos", new SqlServerHealthCheck(Configuration.GetConnectionString("DefaultConnection")))
                    .AddSqlServer(
                                   connectionString: Configuration.GetConnectionString("DefaultConnection"),
                                   healthQuery: "SELECT 1;",
@@ -29,10 +28,8 @@ namespace DevIO.Api.Configuration
                 opt.SetEvaluationTimeInSeconds(15); //time in seconds between check
                 opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks
                 opt.SetApiMaxActiveRequests(1); //api requests concurrency
-
-                opt.AddHealthCheckEndpoint("default api", "/healthz"); //map health check api
             })
-             .AddSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"));
+             .AddInMemoryStorage();
 
             return services;
         }
@@ -42,7 +39,7 @@ namespace DevIO.Api.Configuration
             app.UseRouting()
               .UseEndpoints(config =>
               {
-                  config.MapHealthChecks("/healthz", new HealthCheckOptions
+                  config.MapHealthChecks("/healthchecks", new HealthCheckOptions
                   {
                       Predicate = _ => true,
                       ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
@@ -57,25 +54,6 @@ namespace DevIO.Api.Configuration
                   config.MapDefaultControllerRoute();
               });
             return app;
-        }
-    }
-
-    public class ExampleHealthCheck : IHealthCheck
-    {
-        public Task<HealthCheckResult> CheckHealthAsync(
-            HealthCheckContext context,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            var healthCheckResultHealthy = true;
-
-            if (healthCheckResultHealthy)
-            {
-                return Task.FromResult(
-                    HealthCheckResult.Healthy("A healthy result."));
-            }
-
-            return Task.FromResult(
-                HealthCheckResult.Unhealthy("An unhealthy result."));
         }
     }
 }
