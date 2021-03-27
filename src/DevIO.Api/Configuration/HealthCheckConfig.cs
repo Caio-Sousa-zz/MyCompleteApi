@@ -15,7 +15,13 @@ namespace DevIO.Api.Configuration
         {
             //adding health check services to container
             services.AddHealthChecks()
-                   .AddCheck<ExampleHealthCheck>("example_health_check");
+                   .AddCheck<ExampleHealthCheck>("example_health_check")
+                   .AddSqlServer(
+                                  connectionString: Configuration.GetConnectionString("DefaultConnection"),
+                                  healthQuery: "SELECT 1;",
+                                  name: "SQL Server",
+                                  failureStatus: HealthStatus.Degraded,
+                                  tags: new string[] { "db", "sql", "sqlserver" });
 
             //adding healthchecks UI
             services.AddHealthChecksUI(opt =>
